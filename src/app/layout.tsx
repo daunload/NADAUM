@@ -1,3 +1,4 @@
+import Header from '@/components/layout/header'
 import './globals.css'
 import { Providers } from './provider'
 
@@ -10,6 +11,7 @@ export default function RootLayout({
 		<html lang="ko">
 			<body>
 				<Providers>
+					<Header></Header>
 					<div className="min-h-screen">
 						<div className="max-w-7xl mx-auto px-6 md:px-8">
 							<div className="grid grid-cols-12 gap-6">
