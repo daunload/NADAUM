@@ -1,3 +1,4 @@
+import './globals.css'
 import { Providers } from './provider'
 
 export default function RootLayout({
@@ -8,7 +9,19 @@ export default function RootLayout({
 	return (
 		<html lang="ko">
 			<body>
-				<Providers>{children}</Providers>
+				<Providers>
+					<div className="min-h-screen">
+						<div className="max-w-7xl mx-auto px-6 md:px-8">
+							<div className="grid grid-cols-12 gap-6">
+								<div className="col-span-12">
+									<div className="space-y-12 md:space-y-16">
+										{children}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</Providers>
 			</body>
 		</html>
 	)
