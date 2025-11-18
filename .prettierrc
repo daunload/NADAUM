@@ -4,12 +4,12 @@
 	"endOfLine": "lf",
 	"singleAttributePerLine": false,
 	"printWidth": 80,
-  	"proseWrap": "preserve",
-  	"quoteProps": "as-needed",
+	"proseWrap": "preserve",
+	"quoteProps": "as-needed",
 	"semi": false,
 	"singleQuote": true,
 	"tabWidth": 4,
 	"trailingComma": "all",
 	"useTabs": true,
-  	"embeddedLanguageFormatting": "auto"
+	"embeddedLanguageFormatting": "auto"
 }
