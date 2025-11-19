@@ -33,7 +33,7 @@ export async function PATCH(
 		const body = await request.json()
 		const { title, completed } = body
 
-		const existingTodo = await prisma.todo.findUnique({
+		const existingTodo = await prisma.todoTask.findUnique({
 			where: { id },
 		})
 
@@ -51,7 +51,7 @@ export async function PATCH(
 			)
 		}
 
-		const todo = await prisma.todo.update({
+		const todo = await prisma.todoTask.update({
 			where: { id },
 			data: {
 				...(title !== undefined && { title: title.trim() }),
@@ -97,7 +97,7 @@ export async function DELETE(
 
 		const { id } = await params
 
-		const existingTodo = await prisma.todo.findUnique({
+		const existingTodo = await prisma.todoTask.findUnique({
 			where: { id },
 		})
 
@@ -115,7 +115,7 @@ export async function DELETE(
 			)
 		}
 
-		await prisma.todo.delete({
+		await prisma.todoTask.delete({
 			where: { id },
 		})
 

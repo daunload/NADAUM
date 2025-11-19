@@ -34,7 +34,7 @@ export async function GET(request: Request) {
 		const startOfTomorrow = new Date(startOfToday)
 		startOfTomorrow.setDate(startOfTomorrow.getDate() + 1)
 
-		const todos = await prisma.todo.findMany({
+		const todos = await prisma.todoTask.findMany({
 			where: {
 				userId: user.id,
 				createdAt: {

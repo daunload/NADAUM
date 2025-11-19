@@ -27,7 +27,7 @@ export async function GET(request: Request) {
 			)
 		}
 
-		const todos = await prisma.todo.findMany({
+		const todos = await prisma.todoTask.findMany({
 			where: {
 				userId: user.id,
 			},
@@ -79,7 +79,7 @@ export async function POST(request: Request) {
 			)
 		}
 
-		const todo = await prisma.todo.create({
+		const todo = await prisma.todoTask.create({
 			data: {
 				title: title.trim(),
 				userId: user.id,

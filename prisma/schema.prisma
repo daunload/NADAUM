@@ -26,7 +26,7 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  todos     Todo[]
+  todoTasks     TodoTask[]
 
   @@map("users")
 }
@@ -71,7 +71,7 @@ model VerificationToken {
   @@map("verification_tokens")
 }
 
-model Todo {
+model TodoTask {
   id        String    @id @default(cuid())
   title     String
   completed Boolean   @default(false)
