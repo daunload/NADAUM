@@ -9,7 +9,7 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="ko">
-			<body>
+			<body className="bg-bg-page text-text-main">
 				<Providers>
 					<Header></Header>
 					<div className="min-h-screen">

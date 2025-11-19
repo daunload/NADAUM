@@ -7,11 +7,6 @@ export default async function Home() {
 	const session = await getServerSession(authOptions)
 
 	if (!session) redirect('/api/auth/signin')
+    redirect('/todo')
 
-	return (
-		<main>
-			<h1>NADAUM</h1>
-			<LoginButton />
-		</main>
-	)
 }
