@@ -65,7 +65,9 @@ export default function Header() {
 						{session?.user && (
 							<div className="flex items-center gap-3">
 								<button
-									onClick={() => signOut()}
+									onClick={() =>
+										signOut({ callbackUrl: '/auth/signin' })
+									}
 									className="text-sm font-medium text-sub hover:text-main transition-colors"
 								>
 									로그아웃
@@ -177,7 +179,11 @@ export default function Header() {
 										</p>
 									</div>
 									<button
-										onClick={() => signOut()}
+										onClick={() =>
+											signOut({
+												callbackUrl: '/auth/signin',
+											})
+										}
 										className="text-sm font-medium text-text-sub hover:text-text-main"
 									>
 										로그아웃
