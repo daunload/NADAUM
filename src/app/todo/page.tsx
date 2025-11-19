@@ -4,74 +4,54 @@ import { useEffect, useState } from 'react'
 
 interface Todo {
 	id: string
-	text: string
+	title: string
 	completed: boolean
-	createdAt: number
 }
 
 export default function TodoPage() {
 	const [todos, setTodos] = useState<Todo[]>([])
 	const [inputValue, setInputValue] = useState('')
-	const [isLoaded, setIsLoaded] = useState(false)
 
-	// Load from local storage on mount
 	useEffect(() => {
-		const saved = localStorage.getItem('nadaum-todos')
-		if (saved) {
-			try {
-				setTodos(JSON.parse(saved))
-			} catch (e) {
-				console.error('Failed to parse todos', e)
-			}
+		async function load() {
+			const res = await fetch('/api/todos/today')
+			const todosData = await res.json()
+
+			setTodos(todosData)
 		}
-		setIsLoaded(true)
+
+		load()
 	}, [])
 
-	// Save to local storage whenever todos change
-	useEffect(() => {
-		if (isLoaded) {
-			localStorage.setItem('nadaum-todos', JSON.stringify(todos))
-		}
-	}, [todos, isLoaded])
-
-	const addTodo = (e?: React.FormEvent) => {
+	const addTodo = async (e?: React.FormEvent) => {
 		if (e) e.preventDefault()
 		if (!inputValue.trim()) return
 
-		const newTodo: Todo = {
-			id: crypto.randomUUID(),
-			text: inputValue.trim(),
-			completed: false,
-			createdAt: Date.now(),
-		}
+		const res = await fetch('/api/todos', {
+			method: 'POST',
+			body: JSON.stringify({ title: inputValue.trim() }),
+		})
+		const todosData = await res.json()
 
-		setTodos((prev) => [newTodo, ...prev])
+		setTodos((prev) => [todosData, ...prev])
 		setInputValue('')
 	}
 
-	const toggleTodo = (id: string) => {
-		setTodos((prev) =>
-			prev.map((todo) =>
-				todo.id === id ? { ...todo, completed: !todo.completed } : todo
-			)
-		)
-	}
+	const deleteTodo = (id: string) => {}
 
-	const deleteTodo = (id: string) => {
-		setTodos((prev) => prev.filter((todo) => todo.id !== id))
-	}
-
-	const activeTodos = todos.filter((t) => !t.completed)
-	const completedTodos = todos.filter((t) => t.completed)
+	const activeTodos = todos.filter((todo) => !todo.completed)
+	const completedTodos = todos.filter((todo) => todo.completed)
 
 	return (
 		<div className="min-h-[80vh] flex items-center justify-center py-12 bg-bg-page">
 			<div className="w-full max-w-2xl bg-bg-surface rounded-3xl shadow-xl border border-border-soft overflow-hidden transition-all duration-300">
 				{/* Header */}
 				<div className="bg-bg-subtle p-8">
-					<h1 className="text-3xl font-bold tracking-tight text-text-main">My Tasks</h1>
+					<h1 className="text-3xl font-bold tracking-tight text-text-main">
+						오늘의 기준
+					</h1>
 					<p className="text-text-sub mt-2 opacity-90">
-						{activeTodos.length} tasks remaining
+						미완료된 기준: {activeTodos.length}
 					</p>
 				</div>
 
@@ -110,7 +90,7 @@ export default function TodoPage() {
 
 				{/* Todo List */}
 				<div className="px-8 pb-8 space-y-6 max-h-[600px] overflow-y-auto custom-scrollbar">
-					{todos.length === 0 && isLoaded ? (
+					{todos.length === 0 ? (
 						<div className="text-center py-12 text-text-muted">
 							<div className="mb-4 flex justify-center">
 								<svg
@@ -128,7 +108,9 @@ export default function TodoPage() {
 									/>
 								</svg>
 							</div>
-							<p className="text-lg">No tasks yet. Add one above!</p>
+							<p className="text-lg">
+								No tasks yet. Add one above!
+							</p>
 						</div>
 					) : (
 						<>
@@ -142,7 +124,6 @@ export default function TodoPage() {
 										<TodoItem
 											key={todo.id}
 											todo={todo}
-											onToggle={() => toggleTodo(todo.id)}
 											onDelete={() => deleteTodo(todo.id)}
 										/>
 									))}
@@ -159,7 +140,6 @@ export default function TodoPage() {
 										<TodoItem
 											key={todo.id}
 											todo={todo}
-											onToggle={() => toggleTodo(todo.id)}
 											onDelete={() => deleteTodo(todo.id)}
 										/>
 									))}
@@ -173,19 +153,10 @@ export default function TodoPage() {
 	)
 }
 
-function TodoItem({
-	todo,
-	onToggle,
-	onDelete,
-}: {
-	todo: Todo
-	onToggle: () => void
-	onDelete: () => void
-}) {
+function TodoItem({ todo, onDelete }: { todo: Todo; onDelete: () => void }) {
 	return (
 		<div className="group flex items-center gap-4 bg-bg-surface p-4 rounded-2xl border border-border-soft shadow-sm hover:shadow-md hover:border-accent transition-all duration-200">
 			<button
-				onClick={onToggle}
 				className={`flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
 					todo.completed
 						? 'bg-accent border-accent'
@@ -212,10 +183,12 @@ function TodoItem({
 
 			<span
 				className={`flex-grow text-lg transition-all duration-200 ${
-					todo.completed ? 'text-text-muted line-through' : 'text-text-main'
+					todo.completed
+						? 'text-text-muted line-through'
+						: 'text-text-main'
 				}`}
 			>
-				{todo.text}
+				{todo.title}
 			</span>
 
 			<button

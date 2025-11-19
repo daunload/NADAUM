@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* stylelint-disable-next-line */
 @theme {
   --color-bg-page: #F5F4F1;
   --color-bg-surface: #FFFFFF;
