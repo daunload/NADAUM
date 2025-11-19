@@ -45,7 +45,14 @@ export default function SignIn() {
 				<div className="mt-8 pt-8 border-t border-border-soft">
 					<p className="text-text-muted text-sm">
 						로그인하면 나다움의 <br className="md:hidden" />
-						<a href="#" className="underline hover:text-text-sub">이용약관</a> 및 <a href="#" className="underline hover:text-text-sub">개인정보처리방침</a>에 동의하게 됩니다.
+						<a href="#" className="underline hover:text-text-sub">
+							이용약관
+						</a>{' '}
+						및{' '}
+						<a href="#" className="underline hover:text-text-sub">
+							개인정보처리방침
+						</a>
+						에 동의하게 됩니다.
 					</p>
 				</div>
 			</div>

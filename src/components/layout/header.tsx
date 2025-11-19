@@ -14,7 +14,10 @@ export default function Header() {
 				<div className="flex items-center justify-between h-20">
 					{/* Logo */}
 					<div className="shrink-0">
-						<a href="/" className="text-2xl font-bold text-text-main tracking-tight hover:opacity-80 transition-opacity">
+						<a
+							href="/"
+							className="text-2xl font-bold text-text-main tracking-tight hover:opacity-80 transition-opacity"
+						>
 							NADAUM
 						</a>
 					</div>
@@ -61,7 +64,7 @@ export default function Header() {
 					<div className="hidden md:flex items-center space-x-4">
 						{session?.user && (
 							<div className="flex items-center gap-3">
-								<button 
+								<button
 									onClick={() => signOut()}
 									className="text-sm font-medium text-sub hover:text-main transition-colors"
 								>
@@ -69,9 +72,9 @@ export default function Header() {
 								</button>
 								<div className="relative w-10 h-10 rounded-full overflow-hidden border border-soft">
 									{session.user.image ? (
-										<img 
-											src={session.user.image} 
-											alt={session.user.name || 'User'} 
+										<img
+											src={session.user.image}
+											alt={session.user.name || 'User'}
 											className="w-full h-full object-cover"
 											referrerPolicy="no-referrer"
 										/>
@@ -151,9 +154,11 @@ export default function Header() {
 								<div className="flex items-center gap-4 py-2 border-t border-border-soft mt-2 pt-4">
 									<div className="relative w-10 h-10 rounded-full overflow-hidden border border-border-soft">
 										{session.user.image ? (
-											<img 
-												src={session.user.image} 
-												alt={session.user.name || 'User'} 
+											<img
+												src={session.user.image}
+												alt={
+													session.user.name || 'User'
+												}
 												className="w-full h-full object-cover"
 												referrerPolicy="no-referrer"
 											/>
@@ -164,10 +169,14 @@ export default function Header() {
 										)}
 									</div>
 									<div className="flex-1">
-										<p className="text-sm font-medium text-text-main">{session.user.name}</p>
-										<p className="text-xs text-text-muted">{session.user.email}</p>
+										<p className="text-sm font-medium text-text-main">
+											{session.user.name}
+										</p>
+										<p className="text-xs text-text-muted">
+											{session.user.email}
+										</p>
 									</div>
-									<button 
+									<button
 										onClick={() => signOut()}
 										className="text-sm font-medium text-text-sub hover:text-text-main"
 									>
@@ -182,5 +191,3 @@ export default function Header() {
 		</header>
 	)
 }
-
-
