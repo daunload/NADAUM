@@ -22,44 +22,6 @@ export default function Header() {
 						</a>
 					</div>
 
-					{/* Desktop Navigation */}
-					<nav className="hidden md:block">
-						<ul className="flex space-x-10">
-							<li>
-								<a
-									href="/"
-									className="text-main font-medium hover:text-primary transition-colors duration-200"
-								>
-									홈
-								</a>
-							</li>
-							<li>
-								<a
-									href="/routine"
-									className="text-sub font-medium hover:text-primary transition-colors duration-200"
-								>
-									루틴
-								</a>
-							</li>
-							<li>
-								<a
-									href="/record"
-									className="text-sub font-medium hover:text-primary transition-colors duration-200"
-								>
-									기록
-								</a>
-							</li>
-							<li>
-								<a
-									href="/emotion"
-									className="text-sub font-medium hover:text-primary transition-colors duration-200"
-								>
-									감정
-								</a>
-							</li>
-						</ul>
-					</nav>
-
 					{/* Desktop Action Buttons / Avatar */}
 					<div className="hidden md:flex items-center space-x-4">
 						{session?.user && (
@@ -121,30 +83,6 @@ export default function Header() {
 										className="block py-3 px-4 text-text-main font-medium rounded-xl hover:bg-subtle transition-colors duration-200"
 									>
 										홈
-									</a>
-								</li>
-								<li>
-									<a
-										href="/routine"
-										className="block py-3 px-4 text-text-main font-medium rounded-xl hover:bg-bg-subtle transition-colors duration-200"
-									>
-										루틴
-									</a>
-								</li>
-								<li>
-									<a
-										href="/record"
-										className="block py-3 px-4 text-text-main font-medium rounded-xl hover:bg-bg-subtle transition-colors duration-200"
-									>
-										기록
-									</a>
-								</li>
-								<li>
-									<a
-										href="/emotion"
-										className="block py-3 px-4 text-text-main font-medium rounded-xl hover:bg-bg-subtle transition-colors duration-200"
-									>
-										감정
 									</a>
 								</li>
 							</ul>
