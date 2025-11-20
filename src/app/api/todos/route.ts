@@ -1,32 +1,10 @@
 import { prisma } from '@/lib/prisma'
-import { getServerSession } from 'next-auth'
+import { withAuth } from '@/lib/with-auth'
 import { NextResponse } from 'next/server'
-import { authOptions } from '../auth/[...nextauth]/route'
 
 /** 모든 Todo 조회 */
-export async function GET(request: Request) {
+export const GET = withAuth(async (req, { user }) => {
 	try {
-		const session = await getServerSession(authOptions)
-		console.log(session)
-
-		if (!session?.user?.email) {
-			return NextResponse.json(
-				{ error: '인증이 필요합니다.' },
-				{ status: 401 },
-			)
-		}
-
-		const user = await prisma.user.findUnique({
-			where: { email: session.user.email },
-		})
-
-		if (!user) {
-			return NextResponse.json(
-				{ error: '사용자를 찾을 수 없습니다.' },
-				{ status: 404 },
-			)
-		}
-
 		const todos = await prisma.todoTask.findMany({
 			where: {
 				userId: user.id,
@@ -44,32 +22,12 @@ export async function GET(request: Request) {
 			{ status: 500 },
 		)
 	}
-}
+})
 
 /** 새로운 Todo 생성 */
-export async function POST(request: Request) {
+export const POST = withAuth(async (req, { user }) => {
 	try {
-		const session = await getServerSession(authOptions)
-
-		if (!session?.user?.email) {
-			return NextResponse.json(
-				{ error: '인증이 필요합니다.' },
-				{ status: 401 },
-			)
-		}
-
-		const user = await prisma.user.findUnique({
-			where: { email: session.user.email },
-		})
-
-		if (!user) {
-			return NextResponse.json(
-				{ error: '사용자를 찾을 수 없습니다.' },
-				{ status: 404 },
-			)
-		}
-
-		const body = await request.json()
+		const body = await req.json()
 		const { title } = body
 
 		if (!title || title.trim() === '') {
@@ -94,4 +52,4 @@ export async function POST(request: Request) {
 			{ status: 500 },
 		)
 	}
-}
+})
