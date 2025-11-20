@@ -1,9 +1,9 @@
-import { TodoTask } from '../types'
+import { TodoResponse, UpdateTodoRequest } from '../types'
 
 export const updateTask = async (
 	id: string,
-	task: { title?: string; completed?: boolean },
-): Promise<TodoTask> => {
+	task: UpdateTodoRequest,
+): Promise<TodoResponse> => {
 	const res = await fetch(`/api/todos/${id}`, {
 		method: 'PATCH',
 		body: JSON.stringify(task),

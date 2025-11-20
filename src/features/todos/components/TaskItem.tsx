@@ -1,3 +1,5 @@
+import { Todo } from '../types'
+
 export default function TaskItem({
 	todo,
 	onDelete,

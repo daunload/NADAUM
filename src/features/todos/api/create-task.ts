@@ -1,6 +1,6 @@
-import { TodoTask } from '../types'
+import { CreateTodoRequest, TodoResponse } from '../types'
 
-export const createTask = async (text: string): Promise<TodoTask> => {
+export const createTask = async (text: string): Promise<TodoResponse> => {
 	const res = await fetch('/api/todos', {
 		method: 'POST',
 		body: JSON.stringify({ title: text.trim() }),

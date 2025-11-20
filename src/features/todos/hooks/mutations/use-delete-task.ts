@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { queryKeys } from '../../../query-key'
 import { deleteTask } from '../../api/delete-task'
+import { Todo } from '../../types'
 
 /** 태스크 삭제 */
 export function useDeleteTask() {

@@ -1,6 +1,6 @@
-import { TodoTask } from '../types'
+import { TodoResponse } from '../types'
 
-export const getTasks = async (): Promise<TodoTask[]> => {
+export const getTasks = async (): Promise<TodoResponse[]> => {
 	const res = await fetch('/api/todos')
 
 	if (!res.ok) {

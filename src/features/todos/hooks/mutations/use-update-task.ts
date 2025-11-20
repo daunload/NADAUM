@@ -1,23 +1,17 @@
 import { queryKeys } from '@/features/query-key'
 import { updateTask } from '@/features/todos/api/update-task'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Todo, UpdateTodoRequest } from '../../types'
 
 /** 태스크 수정 */
 export function useUpdateTask() {
 	const queryClient = useQueryClient()
 
 	return useMutation({
-		mutationFn: ({
-			id,
-			title,
-			completed,
-		}: {
-			id: string
-			title?: string
-			completed?: boolean
-		}) => updateTask(id, { title, completed }),
+		mutationFn: ({ id, ...data }: { id: string } & UpdateTodoRequest) =>
+			updateTask(id, data),
 
-		onMutate: async ({ id, title, completed }) => {
+		onMutate: async ({ id, ...data }) => {
 			await queryClient.cancelQueries({
 				queryKey: queryKeys.todos.today(),
 			})
@@ -36,32 +30,16 @@ export function useUpdateTask() {
 				queryClient.setQueryData<Todo[]>(
 					queryKeys.todos.today(),
 					previousToday.map((todo) =>
-						todo.id === id
-							? {
-									...todo,
-									...(title !== undefined && { title }),
-									...(completed !== undefined && {
-										completed,
-									}),
-								}
-							: todo,
+						todo.id === id ? { ...todo, ...data } : todo,
 					),
 				)
 			}
 
 			if (previousAllTasks) {
 				queryClient.setQueryData<Todo[]>(
-					queryKeys.todos.today(),
+					queryKeys.todos.allTasks(),
 					previousAllTasks.map((todo) =>
-						todo.id === id
-							? {
-									...todo,
-									...(title !== undefined && { title }),
-									...(completed !== undefined && {
-										completed,
-									}),
-								}
-							: todo,
+						todo.id === id ? { ...todo, ...data } : todo,
 					),
 				)
 			}

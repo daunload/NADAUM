@@ -1,3 +1,4 @@
+import { Todo } from '../types'
 import TaskItem from './TaskItem'
 
 export default function TaskGroup({
