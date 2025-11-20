@@ -45,6 +45,25 @@ export default function TodoPage() {
 		setTodos((prev) => prev.filter((todo) => todo.id !== id))
 	}
 
+	const toggleTask = async (id: string, isCompleted: boolean) => {
+		const res = await fetch(`/api/todos/${id}`, {
+			method: 'PATCH',
+			body: JSON.stringify({ completed: !isCompleted }),
+		})
+
+		if (!res.ok) {
+			const errorData = await res.json().catch(() => null)
+			const msg = errorData?.error ?? '업데이트에 실패했습니다.'
+			throw new Error(msg)
+		}
+
+		const todosData = await res.json()
+
+		setTodos((prev) =>
+			prev.map((todo) => (todo.id === id ? { ...todosData } : todo)),
+		)
+	}
+
 	const activeTodos = todos.filter((todo) => !todo.completed)
 	const completedTodos = todos.filter((todo) => todo.completed)
 
@@ -60,6 +79,7 @@ export default function TodoPage() {
 							<TaskGroup
 								taskList={activeTodos}
 								onDelete={deleteTask}
+								onToggle={toggleTask}
 							/>
 						</div>
 
@@ -71,6 +91,7 @@ export default function TodoPage() {
 								<TaskGroup
 									taskList={completedTodos}
 									onDelete={deleteTask}
+									onToggle={toggleTask}
 								/>
 							</div>
 						)}

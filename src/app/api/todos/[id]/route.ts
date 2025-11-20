@@ -29,7 +29,7 @@ export async function PATCH(
 			)
 		}
 
-		const { id } = params
+		const { id } = await params
 		const body = await request.json()
 		const { title, completed } = body
 
