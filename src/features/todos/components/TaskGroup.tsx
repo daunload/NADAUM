@@ -5,10 +5,12 @@ export default function TaskGroup({
 	taskList,
 	onDelete,
 	onToggle,
+	onSelect,
 }: {
 	taskList: Todo[]
 	onDelete: (taskId: string) => void
 	onToggle: (taskId: string, isCompleted: boolean) => void
+	onSelect?: (taskId: string) => void
 }) {
 	return (
 		<>
@@ -20,6 +22,7 @@ export default function TaskGroup({
 							todo={todo}
 							onDelete={onDelete}
 							onToggle={onToggle}
+							onSelect={onSelect}
 						/>
 					))}
 				</ul>

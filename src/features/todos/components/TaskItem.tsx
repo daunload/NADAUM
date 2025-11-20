@@ -4,15 +4,23 @@ export default function TaskItem({
 	todo,
 	onDelete,
 	onToggle,
+	onSelect,
 }: {
 	todo: Todo
 	onDelete: (taskId: string) => void
 	onToggle: (taskId: string, isCompleted: boolean) => void
+	onSelect?: (taskId: string) => void
 }) {
 	return (
-		<li className="group flex items-center gap-4 bg-bg-surface p-4 rounded-2xl border border-border-soft shadow-sm hover:shadow-md hover:border-accent transition-all duration-200">
+		<li
+			className="group flex items-center gap-4 bg-bg-surface p-4 rounded-2xl border border-border-soft shadow-sm hover:shadow-md hover:border-accent transition-all duration-200 cursor-pointer"
+			onClick={() => onSelect?.(todo.id)}
+		>
 			<button
-				onClick={() => onToggle(todo.id, todo.completed)}
+				onClick={(e) => {
+					e.stopPropagation()
+					onToggle(todo.id, todo.completed)
+				}}
 				className={`flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
 					todo.completed
 						? 'bg-accent border-accent'
@@ -48,7 +56,10 @@ export default function TaskItem({
 			</span>
 
 			<button
-				onClick={() => onDelete(todo.id)}
+				onClick={(e) => {
+					e.stopPropagation()
+					onDelete(todo.id)
+				}}
 				className="opacity-0 group-hover:opacity-100 p-2 text-text-muted hover:text-error hover:bg-error/10 rounded-xl transition-all duration-200"
 				aria-label="Delete task"
 			>

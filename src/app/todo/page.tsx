@@ -1,9 +1,11 @@
 'use client'
 
+import TaskDetailPanel from '../../features/todos/components/TaskDetailPanel'
 import TaskGroup from '../../features/todos/components/TaskGroup'
 import TaskGroupTitle from '../../features/todos/components/TaskGroupTitle'
 import TaskNewItem from '../../features/todos/components/TaskNewItem'
 
+import { useState } from 'react'
 import {
 	useCreateTask,
 	useDeleteTask,
@@ -18,8 +20,30 @@ export default function TodoPage() {
 	const deleteTask = useDeleteTask()
 	const updateTask = useUpdateTask()
 
+	const [selectedTodoId, setSelectedTodoId] = useState<string | null>(null)
+
 	const activeTodos = todos?.filter((todo) => !todo.completed) ?? []
 	const completedTodos = todos?.filter((todo) => todo.completed) ?? []
+
+	const selectedTodo =
+		todos?.find((todo) => todo.id === selectedTodoId) ?? null
+
+	const handleSelect = (id: string) => {
+		setSelectedTodoId(id)
+	}
+
+	const handleClosePanel = () => {
+		setSelectedTodoId(null)
+	}
+
+	const handleUpdateFromPanel = (id: string, updates: any) => {
+		updateTask.mutate({ id, ...updates })
+	}
+
+	const handleDeleteFromPanel = (id: string) => {
+		deleteTask.mutate(id)
+		setSelectedTodoId(null)
+	}
 
 	return (
 		<div className="flex items-center justify-center bg-bg-page">
@@ -39,6 +63,7 @@ export default function TodoPage() {
 										completed: !completed,
 									})
 								}
+								onSelect={handleSelect}
 							/>
 						</div>
 
@@ -56,12 +81,20 @@ export default function TodoPage() {
 											completed: !completed,
 										})
 									}
+									onSelect={handleSelect}
 								/>
 							</div>
 						)}
 					</>
 				</div>
 			</div>
+
+			<TaskDetailPanel
+				todo={selectedTodo}
+				onClose={handleClosePanel}
+				onUpdate={handleUpdateFromPanel}
+				onDelete={handleDeleteFromPanel}
+			/>
 		</div>
 	)
 }

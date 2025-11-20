@@ -19,5 +19,18 @@
 
 	--color-success: #7baa82;
 	--color-warning: #e6b566;
-	--color-error: #d57a7a;
+	--color-error: #ef4444;
+}
+
+@keyframes slide-in {
+	from {
+		transform: translateX(100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+
+.animate-slide-in {
+	animation: slide-in 0.3s ease-out;
 }
