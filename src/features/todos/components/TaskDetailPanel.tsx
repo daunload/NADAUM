@@ -1,5 +1,8 @@
 'use client'
 
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { useEffect, useState } from 'react'
 import { Todo, UpdateTodoRequest } from '../types'
 
@@ -41,14 +44,8 @@ export default function TaskDetailPanel({
 
 	return (
 		<>
-			{/* Backdrop */}
-			<div
-				className="fixed inset-0 bg-black/20 z-40 transition-opacity"
-				onClick={onClose}
-			/>
-
 			{/* Panel */}
-			<div className="fixed right-0 top-0 h-full w-full max-w-md bg-bg-surface shadow-2xl z-50 flex flex-col animate-slide-in">
+			<div className="h-full w-full max-w-md bg-bg-surface flex flex-col rounded-[20px] border border-border-soft">
 				{/* Header */}
 				<div className="flex items-center justify-between p-6 border-b border-border-soft">
 					<h2 className="text-xl font-semibold text-text-main">
@@ -80,15 +77,16 @@ export default function TaskDetailPanel({
 				<div className="flex-1 overflow-y-auto p-6 space-y-6">
 					{/* Status */}
 					<div className="flex items-center gap-3">
-						<div
-							className={`px-3 py-1 rounded-full text-sm font-medium ${
+						<Badge
+							variant={todo.completed ? 'accent' : 'default'}
+							className={
 								todo.completed
 									? 'bg-accent/10 text-accent'
 									: 'bg-border-soft text-text-muted'
-							}`}
+							}
 						>
 							{todo.completed ? '완료됨' : '진행 중'}
-						</div>
+						</Badge>
 					</div>
 
 					{/* Title */}
@@ -96,49 +94,25 @@ export default function TaskDetailPanel({
 						<label className="block text-sm font-medium text-text-main mb-2">
 							제목
 						</label>
-						<input
-							type="text"
+						<Input
 							value={title}
 							onChange={(e) => setTitle(e.target.value)}
 							onBlur={handleSave}
-							className="w-full px-4 py-3 bg-bg-page border border-border-soft rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all text-text-main"
 							placeholder="할 일을 입력하세요"
 						/>
 					</div>
-
-					{/* Created At */}
-					<div>
-						<label className="block text-sm font-medium text-text-main mb-2">
-							생성일
-						</label>
-						<p className="text-text-muted">
-							{new Date(todo.createdAt).toLocaleString('ko-KR')}
-						</p>
-					</div>
-
-					{/* Updated At */}
-					{todo.updatedAt && (
-						<div>
-							<label className="block text-sm font-medium text-text-main mb-2">
-								수정일
-							</label>
-							<p className="text-text-muted">
-								{new Date(todo.updatedAt).toLocaleString(
-									'ko-KR',
-								)}
-							</p>
-						</div>
-					)}
 				</div>
 
 				{/* Footer */}
 				<div className="p-6 border-t border-border-soft">
-					<button
+					<Button
 						onClick={handleDelete}
-						className="w-full px-4 py-3 bg-error/10 text-error rounded-xl hover:bg-error/20 transition-colors font-medium"
+						variant="secondary"
+						fullWidth
+						className="bg-error/10 text-error border-transparent hover:bg-error/20 hover:text-error"
 					>
 						삭제하기
-					</button>
+					</Button>
 				</div>
 			</div>
 		</>

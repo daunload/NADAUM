@@ -30,11 +30,11 @@ export default function Header() {
 									onClick={() =>
 										signOut({ callbackUrl: '/auth/signin' })
 									}
-									className="text-sm font-medium text-sub hover:text-main transition-colors"
+									className="text-sm font-medium text-text-sub hover:text-text-main transition-colors"
 								>
 									로그아웃
 								</button>
-								<div className="relative w-10 h-10 rounded-full overflow-hidden border border-soft">
+								<div className="relative w-10 h-10 rounded-full overflow-hidden border border-border-soft">
 									{session.user.image ? (
 										<img
 											src={session.user.image}
@@ -43,7 +43,7 @@ export default function Header() {
 											referrerPolicy="no-referrer"
 										/>
 									) : (
-										<div className="w-full h-full bg-subtle flex items-center justify-center text-muted">
+										<div className="w-full h-full bg-bg-subtle flex items-center justify-center text-text-muted">
 											{session.user.name?.[0] || 'U'}
 										</div>
 									)}
@@ -80,7 +80,7 @@ export default function Header() {
 								<li>
 									<a
 										href="/"
-										className="block py-3 px-4 text-text-main font-medium rounded-xl hover:bg-subtle transition-colors duration-200"
+										className="block py-3 px-4 text-text-main font-medium rounded-xl hover:bg-bg-subtle transition-colors duration-200"
 									>
 										홈
 									</a>

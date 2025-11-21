@@ -1,7 +1,7 @@
 export default function TaskGroupTitle({ title }: { title: string }) {
 	return (
-		<p className="text-md font-semibold text-accent uppercase tracking-wider">
+		<h3 className="text-[18px] font-medium leading-normal text-text-main mb-4">
 			{title}
-		</p>
+		</h3>
 	)
 }

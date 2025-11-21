@@ -46,7 +46,7 @@ export default function TodoPage() {
 	}
 
 	return (
-		<div className="flex items-center justify-center bg-bg-page">
+		<div className="flex justify-center bg-bg-page h-full">
 			<div className="w-full">
 				<TaskNewItem onAddTask={(text) => addTask.mutate(text)} />
 
