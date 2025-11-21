@@ -9,10 +9,10 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="ko">
-			<body className="bg-bg-page text-text-main">
+			<body className="bg-bg-page text-text-main h-screen flex flex-col">
 				<Providers>
 					<Header></Header>
-					<div className="min-h-screen">
+					<div className="flex-1">
 						<div className="max-w-7xl mx-auto px-6 md:px-8">
 							<div className="grid grid-cols-12 gap-6">
 								<div className="col-span-12">
