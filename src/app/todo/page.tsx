@@ -94,6 +94,12 @@ export default function TodoPage() {
 				onClose={handleClosePanel}
 				onUpdate={handleUpdateFromPanel}
 				onDelete={handleDeleteFromPanel}
+				onToggle={(id, completed) =>
+					updateTask.mutate({
+						id,
+						completed: !completed,
+					})
+				}
 			/>
 		</div>
 	)

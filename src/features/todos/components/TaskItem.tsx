@@ -1,4 +1,5 @@
 import { Todo } from '../types'
+import TaskToggle from './TaskToggle'
 
 export default function TaskItem({
 	todo,
@@ -16,34 +17,13 @@ export default function TaskItem({
 			className="group flex items-center gap-4 bg-bg-surface p-4 rounded-[20px] border border-border-soft shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.04)] hover:border-accent/50 transition-all duration-300 cursor-pointer"
 			onClick={() => onSelect?.(todo.id)}
 		>
-			<button
+			<TaskToggle
+				active={todo.completed}
 				onClick={(e) => {
 					e.stopPropagation()
 					onToggle(todo.id, todo.completed)
 				}}
-				className={`shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
-					todo.completed
-						? 'bg-accent border-accent'
-						: 'border-border-strong hover:border-accent'
-				}`}
-			>
-				{todo.completed && (
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 24 24"
-						strokeWidth={3}
-						stroke="currentColor"
-						className="w-3.5 h-3.5 text-text-inverse"
-					>
-						<path
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							d="M4.5 12.75l6 6 9-13.5"
-						/>
-					</svg>
-				)}
-			</button>
+			></TaskToggle>
 
 			<span
 				className={`grow text-lg transition-all duration-200 ${
