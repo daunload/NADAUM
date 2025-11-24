@@ -1,11 +1,37 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { useState } from 'react'
+import { Todo } from '@/features/todos/types'
+import { useEffect, useState } from 'react'
+import { useMonthlyTasks } from '../hooks/queries/use-monthly-todos'
+import CalendarDay from './CalendarDay'
 
 export const Calendar = () => {
 	const [currentDate, setCurrentDate] = useState(new Date())
+	const { data: monthlyTasks } = useMonthlyTasks(
+		currentDate.getFullYear(),
+		currentDate.getMonth() + 1,
+	)
+
+	const [monthlyTasksByDay, setMonthlyTasksByDay] = useState<
+		Record<number, Todo[]>
+	>({})
+
+	useEffect(() => {
+		if (!monthlyTasks) return
+
+		const grouped: Record<number, Todo[]> = {}
+
+		monthlyTasks.todos.forEach((todo) => {
+			const day = new Date(todo.createdAt).getDate()
+			if (!grouped[day]) {
+				grouped[day] = []
+			}
+			grouped[day].push(todo)
+		})
+
+		setMonthlyTasksByDay(grouped)
+	}, [monthlyTasks])
 
 	const getDaysInMonth = (date: Date) => {
 		const year = date.getFullYear()
@@ -54,10 +80,18 @@ export const Calendar = () => {
 					{currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월
 				</h2>
 				<div className="flex gap-2">
-					<Button variant="secondary" size="sm" onClick={handlePrevMonth}>
+					<Button
+						variant="secondary"
+						size="sm"
+						onClick={handlePrevMonth}
+					>
 						이전달
 					</Button>
-					<Button variant="secondary" size="sm" onClick={handleNextMonth}>
+					<Button
+						variant="secondary"
+						size="sm"
+						onClick={handleNextMonth}
+					>
 						다음달
 					</Button>
 				</div>
@@ -79,22 +113,12 @@ export const Calendar = () => {
 					<div key={`empty-${index}`} className="h-24" />
 				))}
 				{days.map((day) => (
-					<div
+					<CalendarDay
+						day={day}
+						isToday={isToday(day)}
+						tasks={monthlyTasksByDay[day] || []}
 						key={day}
-						className={`h-24 border rounded-xl p-2 flex flex-col items-start justify-start transition-colors hover:bg-bg-subtle/30 ${
-							isToday(day)
-								? 'bg-primary/10 border-primary text-primary'
-								: 'border-border-soft text-text-main bg-bg-surface'
-						}`}
-					>
-						<span
-							className={`text-sm font-medium w-6 h-6 flex items-center justify-center rounded-full ${
-								isToday(day) ? 'bg-primary text-text-inverse' : ''
-							}`}
-						>
-							{day}
-						</span>
-					</div>
+					/>
 				))}
 			</div>
 		</div>
