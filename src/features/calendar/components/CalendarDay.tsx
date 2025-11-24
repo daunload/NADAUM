@@ -1,18 +1,21 @@
 import { Todo } from '@/features/todos/types'
+import { forwardRef } from 'react'
 
-export default function CalendarDay({
-	day,
-	isToday,
-	tasks,
-}: {
-	day: number
-	isToday: boolean
-	tasks: Todo[]
-}) {
+const CalendarDay = forwardRef<
+	HTMLDivElement,
+	{
+		day: number
+		isToday: boolean
+		tasks: Todo[]
+		onClick?: () => void
+	}
+>(({ day, isToday, tasks, onClick }, ref) => {
 	return (
 		<div
+			ref={ref}
 			key={day}
-			className={`h-24 border rounded-xl p-2 flex flex-col items-start justify-start transition-colors hover:bg-bg-subtle/30 ${
+			onClick={onClick}
+			className={`h-24 border rounded-xl p-2 flex flex-col items-start justify-start transition-all duration-200 hover:bg-bg-subtle/30 cursor-pointer hover:scale-105 active:scale-95 ${
 				isToday
 					? 'bg-primary/10 border-primary text-primary'
 					: 'border-border-soft text-text-main bg-bg-surface'
@@ -36,4 +39,8 @@ export default function CalendarDay({
 			)}
 		</div>
 	)
-}
+})
+
+CalendarDay.displayName = 'CalendarDay'
+
+export default CalendarDay

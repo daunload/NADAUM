@@ -2,9 +2,10 @@
 
 import { Button } from '@/components/ui/button'
 import { Todo } from '@/features/todos/types'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useMonthlyTasks } from '../hooks/queries/use-monthly-todos'
 import CalendarDay from './CalendarDay'
+import { DayDetailDialog } from './DayDetailDialog'
 
 export const Calendar = () => {
 	const [currentDate, setCurrentDate] = useState(new Date())
@@ -16,6 +17,12 @@ export const Calendar = () => {
 	const [monthlyTasksByDay, setMonthlyTasksByDay] = useState<
 		Record<number, Todo[]>
 	>({})
+
+	const [selectedDay, setSelectedDay] = useState<number | null>(null)
+	const [dialogOpen, setDialogOpen] = useState(false)
+	const [originRect, setOriginRect] = useState<DOMRect | null>(null)
+
+	const dayRefs = useRef<Map<number, HTMLDivElement>>(new Map())
 
 	useEffect(() => {
 		if (!monthlyTasks) return
@@ -71,6 +78,13 @@ export const Calendar = () => {
 		)
 	}
 
+	const handleDayClick = (day: number) => {
+		const element = dayRefs.current.get(day)
+		if (element) setOriginRect(element.getBoundingClientRect())
+		setSelectedDay(day)
+		setDialogOpen(true)
+	}
+
 	const weekDays = ['일', '월', '화', '수', '목', '금', '토']
 
 	return (
@@ -114,13 +128,28 @@ export const Calendar = () => {
 				))}
 				{days.map((day) => (
 					<CalendarDay
+						ref={(el) => {
+							if (el) dayRefs.current.set(day, el)
+							else dayRefs.current.delete(day)
+						}}
 						day={day}
 						isToday={isToday(day)}
 						tasks={monthlyTasksByDay[day] || []}
+						onClick={() => handleDayClick(day)}
 						key={day}
 					/>
 				))}
 			</div>
+
+			<DayDetailDialog
+				open={dialogOpen}
+				onOpenChange={setDialogOpen}
+				day={selectedDay || 1}
+				year={currentDate.getFullYear()}
+				month={currentDate.getMonth() + 1}
+				tasks={selectedDay ? monthlyTasksByDay[selectedDay] || [] : []}
+				originRect={originRect}
+			/>
 		</div>
 	)
 }
