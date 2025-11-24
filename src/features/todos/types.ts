@@ -16,3 +16,9 @@ export interface UpdateTodoRequest {
 	title?: string
 	completed?: boolean
 }
+
+export interface MonthlyTodoResponse {
+	year: number
+	month: number
+	todos: TodoResponse[]
+}
