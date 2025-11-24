@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 
 export function useMonthlyTasks(year: number, month: number) {
 	return useQuery({
-		queryKey: ['todos', 'monthly'],
+		queryKey: ['todos', 'monthly', year, month],
 		queryFn: async () => getMonthlyTasks({ year, month }),
 	})
 }
