@@ -1,10 +1,13 @@
 'use client'
 
-import TaskDetailPanel from '@/features/todos/components/TaskDetailPanel'
-import TaskGroup from '@/features/todos/components/TaskGroup'
-import TaskGroupTitle from '@/features/todos/components/TaskGroupTitle'
-import TaskNewItem from '@/features/todos/components/TaskNewItem'
+import {
+	TaskDetailPanel,
+	TaskGroup,
+	TaskGroupTitle,
+	TaskNewItem,
+} from '@/features/todos/components/'
 
+import { UpdateTodoRequest } from '@/features/todos/types'
 import { useState } from 'react'
 import {
 	useCreateTask,
@@ -36,7 +39,7 @@ export default function TodoPage() {
 		setSelectedTodoId(null)
 	}
 
-	const handleUpdateFromPanel = (id: string, updates: any) => {
+	const handleUpdateFromPanel = (id: string, updates: UpdateTodoRequest) => {
 		updateTask.mutate({ id, ...updates })
 	}
 
