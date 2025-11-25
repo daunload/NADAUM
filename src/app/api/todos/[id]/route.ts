@@ -8,7 +8,7 @@ export const PATCH = withAuth<{ id: string }>(async (req, { user, params }) => {
 		const { id } = await params
 
 		const body = await req.json()
-		const { title, completed, review } = body
+		const { title, completed, review, emotion } = body
 
 		const existingTodo = await prisma.todoTask.findUnique({
 			where: { id },
@@ -34,6 +34,7 @@ export const PATCH = withAuth<{ id: string }>(async (req, { user, params }) => {
 				...(title !== undefined && { title: title.trim() }),
 				...(completed !== undefined && { completed }),
 				...(review !== undefined && { review }),
+				...(emotion !== undefined && { emotion }),
 			},
 		})
 

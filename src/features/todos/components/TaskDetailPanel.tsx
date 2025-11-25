@@ -15,6 +15,17 @@ interface TaskDetailPanelProps {
 	onToggle: (taskId: string, isCompleted: boolean) => void
 }
 
+const EMOTIONS = [
+	{ emoji: '😊', label: '기쁨', value: 'joy' },
+	{ emoji: '😐', label: '무난함', value: 'neutral' },
+	{ emoji: '😞', label: '슬픔', value: 'sad' },
+	{ emoji: '😤', label: '스트레스', value: 'stress' },
+	{ emoji: '😩', label: '피곤함', value: 'tired' },
+	{ emoji: '😰', label: '불안', value: 'anxious' },
+	{ emoji: '😡', label: '짜증', value: 'annoyed' },
+	{ emoji: '✨', label: '성취감', value: 'achievement' },
+] as const
+
 export default function TaskDetailPanel({
 	todo,
 	onClose,
@@ -24,24 +35,31 @@ export default function TaskDetailPanel({
 }: TaskDetailPanelProps) {
 	const [title, setTitle] = useState('')
 	const [review, setReview] = useState('')
+	const [selectedEmotion, setSelectedEmotion] = useState('')
 
 	useEffect(() => {
 		if (todo) {
 			setTitle(todo.title)
 			setReview(todo.review || '')
+			setSelectedEmotion(todo.emotion || '')
 		}
 	}, [todo])
 
 	const handleSave = () => {
-		if (todo && title.trim() !== todo.title) {
-			onUpdate(todo.id, { title: title.trim() })
+		const task = {
+			title: title.trim() === '' ? undefined : title,
+			review: review.trim() === '' ? undefined : review,
+			emotion: selectedEmotion,
 		}
+
+		if (todo) onUpdate(todo.id, task)
 	}
 
-	const handleReviewSave = () => {
-		if (todo && review !== todo.review) {
-			onUpdate(todo.id, { review: review })
-		}
+	const handleEmotionSelect = (emotionValue: string) => {
+		let _emoticonValue = emotionValue
+		if (emotionValue === selectedEmotion) _emoticonValue = ''
+
+		setSelectedEmotion(_emoticonValue)
 	}
 
 	const handleDelete = () => {
@@ -56,7 +74,7 @@ export default function TaskDetailPanel({
 	return (
 		<>
 			{/* Panel */}
-			<div className="h-full w-full max-w-md flex p-8 pl-0">
+			<div className="h-full w-full max-w-md flex p-8 pl-0 max-h-[800px]">
 				<div className=" bg-bg-surface w-full h-full flex flex-col rounded-[20px] border border-border-soft">
 					{/* Header */}
 					<div className="flex items-center justify-between p-6 border-b border-border-soft gap-2">
@@ -115,12 +133,43 @@ export default function TaskDetailPanel({
 								className="w-full min-h-[200px] p-3 rounded-lg border border-border-soft bg-bg-page text-text-primary placeholder:text-text-tertiary resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
 							/>
 						</div>
+						{/* Emotion Section */}
+						<div className="space-y-3">
+							<label className="text-sm font-medium text-text-secondary">
+								감정
+							</label>
+							<div className="flex flex-wrap gap-2 mt-2">
+								{EMOTIONS.map((emotion) => (
+									<button
+										key={emotion.value}
+										onClick={() =>
+											handleEmotionSelect(emotion.value)
+										}
+										className={`
+											px-2 py-1 rounded-full text-sm font-medium transition-all
+											flex items-center gap-1.5
+											${
+												selectedEmotion ===
+												emotion.value
+													? 'bg-primary/20 text-primary border-2 border-primary'
+													: 'bg-bg-page text-text-secondary border-2 border-border-soft hover:border-primary/30 hover:bg-primary/5'
+											}
+										`}
+									>
+										<span className="text-base">
+											{emotion.emoji}
+										</span>
+										<span>{emotion.label}</span>
+									</button>
+								))}
+							</div>
+						</div>
 					</div>
 
 					{/* Footer */}
 					<div className="p-4 border-t border-border-soft">
 						<Button
-							onClick={handleReviewSave}
+							onClick={handleSave}
 							variant="secondary"
 							fullWidth
 							className="bg-primary/10 text-primary border-transparent hover:bg-primary/20 hover:text-primary"
