@@ -20,19 +20,27 @@ export default function TaskDetailPanel({
 	onClose,
 	onUpdate,
 	onDelete,
-	onToggle
+	onToggle,
 }: TaskDetailPanelProps) {
 	const [title, setTitle] = useState('')
+	const [review, setReview] = useState('')
 
 	useEffect(() => {
 		if (todo) {
 			setTitle(todo.title)
+			setReview(todo.review || '')
 		}
 	}, [todo])
 
 	const handleSave = () => {
 		if (todo && title.trim() !== todo.title) {
 			onUpdate(todo.id, { title: title.trim() })
+		}
+	}
+
+	const handleReviewSave = () => {
+		if (todo && review !== todo.review) {
+			onUpdate(todo.id, { review: review })
 		}
 	}
 
@@ -89,10 +97,36 @@ export default function TaskDetailPanel({
 
 					{/* Content */}
 					<div className="flex-1 overflow-y-auto p-6 space-y-6">
+						{/* Review Section */}
+						<div className="space-y-3">
+							<div className="flex items-center justify-between">
+								<label className="text-sm font-medium text-text-primary">
+									리뷰
+								</label>
+								<span className="text-xs text-text-tertiary">
+									{review.length} / 500
+								</span>
+							</div>
+							<textarea
+								value={review}
+								onChange={(e) => setReview(e.target.value)}
+								placeholder="이 태스크에 대한 리뷰를 작성해보세요."
+								maxLength={500}
+								className="w-full min-h-[200px] p-3 rounded-lg border border-border-soft bg-bg-page text-text-primary placeholder:text-text-tertiary resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+							/>
+						</div>
 					</div>
 
 					{/* Footer */}
-					<div className="p-6 border-t border-border-soft">
+					<div className="p-4 border-t border-border-soft">
+						<Button
+							onClick={handleReviewSave}
+							variant="secondary"
+							fullWidth
+							className="bg-primary/10 text-primary border-transparent hover:bg-primary/20 hover:text-primary"
+						>
+							저장하기
+						</Button>
 						<Button
 							onClick={handleDelete}
 							variant="secondary"

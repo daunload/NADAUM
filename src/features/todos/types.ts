@@ -2,6 +2,7 @@ export interface Todo {
 	id: string
 	title: string
 	completed: boolean
+	review: string
 	createdAt: Date
 	updatedAt: Date
 }
@@ -15,6 +16,7 @@ export interface CreateTodoRequest {
 export interface UpdateTodoRequest {
 	title?: string
 	completed?: boolean
+	review?: string
 }
 
 export interface MonthlyTodoResponse {
