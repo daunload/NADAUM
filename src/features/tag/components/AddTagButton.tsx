@@ -39,60 +39,78 @@ export default function AddTagButton({ tags, onAddTags }: { tags: string[], onAd
 	}
 
 	return (
-		<div className="flex gap-1">
+		<div className="flex gap-2 flex-wrap">
 			{currentTags && currentTags.map((tag, index) => (
-				<div className="border rounded-lg w-fit px-2 radius-[10px] border-border-strong text-text-muted cursor-pointer" key={index}>
-					<div
-						className="flex items-center gap-2 justify-between"
-					>
-						<div className="flex items-center gap-2">
-							<p>{tag}</p>
-						</div>
-					</div>
+				<div 
+					className="bg-bg-subtle rounded-full px-3 py-1 text-sm text-text-main cursor-pointer hover:bg-opacity-80 transition-colors flex items-center gap-1" 
+					key={index}
+				>
+					<p>{tag}</p>
 				</div>
 			))}
 			<div
-				className="relative border-dashed border rounded-lg w-fit px-2 radius-[10px] border-border-strong text-text-muted cursor-pointer"
+				className="relative"
 			>
-				<p onClick={() => setOpen(!open)}>+ 태그</p>
+				<button 
+					onClick={() => setOpen(!open)}
+					className="flex items-center gap-1 text-sm text-text-sub hover:text-text-main transition-colors px-2 py-1 rounded-md hover:bg-bg-subtle"
+				>
+					<Plus className="w-4 h-4" />
+					<span>태그 추가</span>
+				</button>
 				{open && (
-					<div className="absolute top-full mt-3 p-3 left-[50%] translate-x-[-50%] bg-bg-surface rounded-lg w-[250px] shadow-lg z-10">
-						{userTags?.tags &&
-							userTags.tags.map((tag, index) => (
-								<div
-									className="flex items-center gap-2 py-2 justify-between"
-									key={index}
-								>
-									<div className="flex items-center gap-2">
-										<Tag className="w-4" />
-										<p>{tag}</p>
+					<div className="absolute top-full mt-2 left-0 bg-bg-surface rounded-xl border border-border-soft shadow-xl w-[280px] z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+						<div className="p-2 max-h-[300px] overflow-y-auto">
+							{userTags?.tags && userTags.tags.length > 0 ? (
+								userTags.tags.map((tag, index) => (
+									<div
+										className="flex items-center justify-between px-3 py-2 hover:bg-bg-page rounded-lg cursor-pointer transition-colors group"
+										key={index}
+										onClick={() => onToggleTag(tag)}
+									>
+										<div className="flex items-center gap-2 text-text-main">
+											<Tag className="w-4 h-4 text-text-muted group-hover:text-primary transition-colors" />
+											<p>{tag}</p>
+										</div>
+										<Toggle
+											active={selectedTags.includes(tag)}
+											onClick={(e) => {
+												e.stopPropagation()
+												onToggleTag(tag)
+											}}
+										/>
 									</div>
-									<Toggle
-										active={selectedTags.includes(tag)}
-										onClick={(e) => {
-											e.stopPropagation()
-											onToggleTag(tag)
-										}}>
-									</Toggle>
+								))
+							) : (
+								<div className="text-center py-4 text-text-muted text-sm">
+									등록된 태그가 없습니다.
 								</div>
-							))}
-							<div 
-								className="flex items-center gap-2 py-2 text-warning font-bold rounded-md cursor-pointer px-1"
+							)}
+						</div>
+						<div className="p-2 border-t border-border-soft bg-bg-page/50">
+							<button 
+								className="w-full flex items-center justify-center gap-2 py-2 text-primary font-medium hover:bg-bg-surface rounded-lg transition-all shadow-sm border border-transparent hover:border-border-soft"
 								onClick={() => setAddTagOpen(true)}
 							>
-								<Plus className="w-4" />
-								<p>새 태그 추가</p>
-							</div>
-						<div className="flex justify-end gap-2 w-full mt-2">
+								<Plus className="w-4 h-4" />
+								<span>새 태그 만들기</span>
+							</button>
+						</div>
+						<div className="flex gap-2 p-2 border-t border-border-soft bg-bg-surface">
 							<Button
 								variant="secondary"
-								className="w-[50%]"
+								className="flex-1"
 								size="sm"
 								onClick={() => close()}
 							>
 								취소
 							</Button>
-							<Button variant="primary" className="w-[50%]" size="sm" onClick={() => save()}>
+							<Button 
+								variant="primary" 
+								className="flex-1" 
+								size="sm" 
+								onClick={() => save()}
+							>
 								확인
 							</Button>
 						</div>
