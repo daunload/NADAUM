@@ -4,7 +4,10 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import EmotionSelector from '@/features/emotion/components/EmotionSelector'
 import { Emotion } from '@/features/emotion/types'
+import AddTagButton from '@/features/tag/components/AddTagButton'
 import { useEffect, useState } from 'react'
+import TagInput from '../../tag/components/TagInput'
+import { useUserTags } from '../../tag/hooks/use-user-tags'
 import { Todo, UpdateTodoRequest } from '../types'
 import TaskToggle from './TaskToggle'
 
@@ -26,12 +29,14 @@ export default function TaskDetailPanel({
 	const [title, setTitle] = useState('')
 	const [review, setReview] = useState('')
 	const [selectedEmotions, setSelectedEmotions] = useState<Emotion[]>([])
+	const [selectedTags, setSelectedTags] = useState<string[]>([])
 
 	useEffect(() => {
 		if (todo) {
 			setTitle(todo.title)
 			setReview(todo.review || '')
 			setSelectedEmotions(todo.emotions || [])
+			setSelectedTags(todo.tags || [])
 		}
 	}, [todo])
 
@@ -40,9 +45,20 @@ export default function TaskDetailPanel({
 			title: title.trim() === '' ? undefined : title,
 			review: review.trim() === '' ? undefined : review,
 			emotions: selectedEmotions,
+			tags: selectedTags,
 		}
 
 		if (todo) onUpdate(todo.id, task)
+	}
+
+	const handleAddTag = (tag: string) => {
+		if (!selectedTags.includes(tag)) {
+			setSelectedTags([...selectedTags, tag])
+		}
+	}
+
+	const handleRemoveTag = (tag: string) => {
+		setSelectedTags(selectedTags.filter((t) => t !== tag))
 	}
 
 	const handleEmotionSelect = (emotionValue: Emotion) => {
@@ -70,40 +86,43 @@ export default function TaskDetailPanel({
 			<div className="h-full w-full max-w-md flex p-8 pl-0 max-h-[800px]">
 				<div className=" bg-bg-surface w-full h-full flex flex-col rounded-[20px] border border-border-soft">
 					{/* Header */}
-					<div className="flex items-center justify-between p-6 border-b border-border-soft gap-2">
-						<TaskToggle
-							active={todo.completed}
-							onClick={(e) => {
-								e.stopPropagation()
-								onToggle(todo.id, todo.completed)
-							}}
-						></TaskToggle>
-						<Input
-							value={title}
-							onChange={(e) => setTitle(e.target.value)}
-							onBlur={handleSave}
-							placeholder="할 일을 입력하세요"
-						/>
-						<button
-							onClick={onClose}
-							className="p-2 hover:bg-bg-page rounded-lg transition-colors"
-							aria-label="Close panel"
-						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								fill="none"
-								viewBox="0 0 24 24"
-								strokeWidth={2}
-								stroke="currentColor"
-								className="w-5 h-5"
+					<div className="flex flex-col p-6 border-b border-border-soft">
+						<div className="flex items-center justify-between gap-2 mb-2">
+							<TaskToggle
+								active={todo.completed}
+								onClick={(e) => {
+									e.stopPropagation()
+									onToggle(todo.id, todo.completed)
+								}}
+							></TaskToggle>
+							<Input
+								value={title}
+								onChange={(e) => setTitle(e.target.value)}
+								onBlur={handleSave}
+								placeholder="할 일을 입력하세요"
+							/>
+							<button
+								onClick={onClose}
+								className="p-2 hover:bg-bg-page rounded-lg transition-colors"
+								aria-label="Close panel"
 							>
-								<path
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									d="M6 18L18 6M6 6l12 12"
-								/>
-							</svg>
-						</button>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									fill="none"
+									viewBox="0 0 24 24"
+									strokeWidth={2}
+									stroke="currentColor"
+									className="w-5 h-5"
+								>
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										d="M6 18L18 6M6 6l12 12"
+									/>
+								</svg>
+							</button>
+						</div>
+						<AddTagButton />
 					</div>
 					<div className="flex-1 overflow-y-auto p-6 space-y-6">
 						{todo.completed && (

@@ -25,9 +25,10 @@ model User {
   accounts Account[]
   sessions Session[]
 
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  todoTasks TodoTask[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  todoTasks     TodoTask[]
+  availableTags String[]   @default([])
 
   @@map("users")
 }
@@ -80,6 +81,7 @@ model TodoTask {
   updatedAt DateTime @updatedAt
   review    String   @default("")
   emotions  String[] @default([])
+  tags      String[] @default([])
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)

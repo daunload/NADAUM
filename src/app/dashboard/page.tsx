@@ -218,7 +218,7 @@ export default function DashboardPage() {
 								return (
 									<div
 										key={emotion}
-										className="flex items-center gap-2 px-4 py-2 bg-bg-page rounded-full border border-border-soft"
+										className="flex items-center gap-2 px-2 py-1 bg-bg-page rounded-full border border-border-soft"
 									>
 										<span className="text-xl">
 											{emotionData.emoji}

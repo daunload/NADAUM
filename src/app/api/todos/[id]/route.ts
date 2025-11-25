@@ -8,7 +8,7 @@ export const PATCH = withAuth<{ id: string }>(async (req, { user, params }) => {
 		const { id } = await params
 
 		const body = await req.json()
-		const { title, completed, review, emotions } = body
+		const { title, completed, review, emotions, tags } = body
 
 		const existingTodo = await prisma.todoTask.findUnique({
 			where: { id },
@@ -35,8 +35,31 @@ export const PATCH = withAuth<{ id: string }>(async (req, { user, params }) => {
 				...(completed !== undefined && { completed }),
 				...(review !== undefined && { review }),
 				...(emotions !== undefined && { emotions }),
+				...(tags !== undefined && { tags }),
 			},
 		})
+
+		if (tags && tags.length > 0) {
+			const currentUser = await prisma.user.findUnique({
+				where: { id: user.id },
+				select: { availableTags: true },
+			})
+
+			const newTags = tags.filter(
+				(tag: string) => !currentUser?.availableTags.includes(tag),
+			)
+
+			if (newTags.length > 0) {
+				await prisma.user.update({
+					where: { id: user.id },
+					data: {
+						availableTags: {
+							push: newTags,
+						},
+					},
+				})
+			}
+		}
 
 		return NextResponse.json(todo)
 	} catch (error) {
