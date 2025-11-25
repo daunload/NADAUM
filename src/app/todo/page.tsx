@@ -1,9 +1,9 @@
 'use client'
 
-import TaskDetailPanel from '../../features/todos/components/TaskDetailPanel'
-import TaskGroup from '../../features/todos/components/TaskGroup'
-import TaskGroupTitle from '../../features/todos/components/TaskGroupTitle'
-import TaskNewItem from '../../features/todos/components/TaskNewItem'
+import TaskDetailPanel from '@/features/todos/components/TaskDetailPanel'
+import TaskGroup from '@/features/todos/components/TaskGroup'
+import TaskGroupTitle from '@/features/todos/components/TaskGroupTitle'
+import TaskNewItem from '@/features/todos/components/TaskNewItem'
 
 import { useState } from 'react'
 import {

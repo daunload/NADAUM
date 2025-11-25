@@ -1,9 +1,11 @@
+import { Emotion } from '../emotion/types'
+
 export interface Todo {
 	id: string
 	title: string
 	completed: boolean
 	review: string
-	emotion: string
+	emotion: Emotion
 	createdAt: Date
 	updatedAt: Date
 }
@@ -18,7 +20,7 @@ export interface UpdateTodoRequest {
 	title?: string
 	completed?: boolean
 	review?: string
-	emotion?: string
+	emotion?: Emotion
 }
 
 export interface MonthlyTodoResponse {

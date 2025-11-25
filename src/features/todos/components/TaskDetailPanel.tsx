@@ -1,8 +1,9 @@
 'use client'
 
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import EmotionSelector from '@/features/emotion/components/EmotionSelector'
+import { Emotion } from '@/features/emotion/types'
 import { useEffect, useState } from 'react'
 import { Todo, UpdateTodoRequest } from '../types'
 import TaskToggle from './TaskToggle'
@@ -15,17 +16,6 @@ interface TaskDetailPanelProps {
 	onToggle: (taskId: string, isCompleted: boolean) => void
 }
 
-const EMOTIONS = [
-	{ emoji: '😊', label: '기쁨', value: 'joy' },
-	{ emoji: '😐', label: '무난함', value: 'neutral' },
-	{ emoji: '😞', label: '슬픔', value: 'sad' },
-	{ emoji: '😤', label: '스트레스', value: 'stress' },
-	{ emoji: '😩', label: '피곤함', value: 'tired' },
-	{ emoji: '😰', label: '불안', value: 'anxious' },
-	{ emoji: '😡', label: '짜증', value: 'annoyed' },
-	{ emoji: '✨', label: '성취감', value: 'achievement' },
-] as const
-
 export default function TaskDetailPanel({
 	todo,
 	onClose,
@@ -35,7 +25,7 @@ export default function TaskDetailPanel({
 }: TaskDetailPanelProps) {
 	const [title, setTitle] = useState('')
 	const [review, setReview] = useState('')
-	const [selectedEmotion, setSelectedEmotion] = useState('')
+	const [selectedEmotion, setSelectedEmotion] = useState<Emotion>('')
 
 	useEffect(() => {
 		if (todo) {
@@ -55,11 +45,11 @@ export default function TaskDetailPanel({
 		if (todo) onUpdate(todo.id, task)
 	}
 
-	const handleEmotionSelect = (emotionValue: string) => {
-		let _emoticonValue = emotionValue
-		if (emotionValue === selectedEmotion) _emoticonValue = ''
+	const handleEmotionSelect = (emotionValue: Emotion) => {
+		let _emotionValue = emotionValue
+		if (emotionValue === selectedEmotion) _emotionValue = ''
 
-		setSelectedEmotion(_emoticonValue)
+		setSelectedEmotion(_emotionValue)
 	}
 
 	const handleDelete = () => {
@@ -138,33 +128,10 @@ export default function TaskDetailPanel({
 									<label className="text-sm font-medium text-text-secondary">
 										감정
 									</label>
-									<div className="flex flex-wrap gap-2 mt-2">
-										{EMOTIONS.map((emotion) => (
-											<button
-												key={emotion.value}
-												onClick={() =>
-													handleEmotionSelect(
-														emotion.value,
-													)
-												}
-												className={`
-                                                px-2 py-1 rounded-full text-sm font-medium transition-all
-                                                flex items-center gap-1.5
-                                                ${
-													selectedEmotion ===
-													emotion.value
-														? 'bg-primary/20 text-primary border-2 border-primary'
-														: 'bg-bg-page text-text-secondary border-2 border-border-soft hover:border-primary/30 hover:bg-primary/5'
-												}
-                                            `}
-											>
-												<span className="text-base">
-													{emotion.emoji}
-												</span>
-												<span>{emotion.label}</span>
-											</button>
-										))}
-									</div>
+									<EmotionSelector
+										onSelectEmotion={handleEmotionSelect}
+										selectedEmotion={selectedEmotion}
+									/>
 								</div>
 							</>
 						)}

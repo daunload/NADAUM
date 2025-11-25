@@ -1,0 +1,10 @@
+export type Emotion =
+	| 'joy'
+	| 'neutral'
+	| 'sad'
+	| 'stress'
+	| 'tired'
+	| 'anxious'
+	| 'annoyed'
+	| 'achievement'
+	| ''
