@@ -51,16 +51,6 @@ export default function TaskDetailPanel({
 		if (todo) onUpdate(todo.id, task)
 	}
 
-	const handleAddTag = (tag: string) => {
-		if (!selectedTags.includes(tag)) {
-			setSelectedTags([...selectedTags, tag])
-		}
-	}
-
-	const handleRemoveTag = (tag: string) => {
-		setSelectedTags(selectedTags.filter((t) => t !== tag))
-	}
-
 	const handleEmotionSelect = (emotionValue: Emotion) => {
 		let _selectedEmotions = [...selectedEmotions, emotionValue]
 		if (selectedEmotions.includes(emotionValue))
@@ -69,6 +59,10 @@ export default function TaskDetailPanel({
 			)
 
 		setSelectedEmotions(_selectedEmotions)
+	}
+
+	const handleAddTags = (tags: string[]) => {
+		setSelectedTags(tags)
 	}
 
 	const handleDelete = () => {
@@ -122,7 +116,7 @@ export default function TaskDetailPanel({
 								</svg>
 							</button>
 						</div>
-						<AddTagButton />
+						<AddTagButton tags={todo.tags} onAddTags={handleAddTags}/>
 					</div>
 					<div className="flex-1 overflow-y-auto p-6 space-y-6">
 						{todo.completed && (
