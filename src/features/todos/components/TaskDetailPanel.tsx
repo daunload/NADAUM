@@ -98,7 +98,6 @@ export default function TaskDetailPanel({
 							<button
 								onClick={onClose}
 								className="p-2 hover:bg-bg-page rounded-lg transition-colors"
-								aria-label="Close panel"
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"

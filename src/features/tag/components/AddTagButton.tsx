@@ -5,12 +5,15 @@ import Toggle from '@/components/ui/toggle'
 import { Plus, Tag } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useUserTags } from '../hooks/use-user-tags'
+import AddTagDialog from './AddTagDialog'
 
 export default function AddTagButton({ tags, onAddTags }: { tags: string[], onAddTags: (tags: string[]) => void}) {
 	const [open, setOpen] = useState(false)
 	const { data: userTags } = useUserTags()
 	const [currentTags, setCurrentTags] = useState<string[]>([])
 	const [selectedTags, setSelectedTags] = useState<string[]>([])
+
+	const [addTagOpen, setAddTagOpen] = useState(false)
 
 	useEffect(() => {
 		setCurrentTags(tags)
@@ -53,7 +56,7 @@ export default function AddTagButton({ tags, onAddTags }: { tags: string[], onAd
 			>
 				<p onClick={() => setOpen(!open)}>+ 태그</p>
 				{open && (
-					<div className="absolute top-full mt-3 p-3 left-[50%] translate-x-[-50%] bg-bg-surface rounded-lg w-[250px] shadow-lg">
+					<div className="absolute top-full mt-3 p-3 left-[50%] translate-x-[-50%] bg-bg-surface rounded-lg w-[250px] shadow-lg z-10">
 						{userTags?.tags &&
 							userTags.tags.map((tag, index) => (
 								<div
@@ -73,11 +76,14 @@ export default function AddTagButton({ tags, onAddTags }: { tags: string[], onAd
 									</Toggle>
 								</div>
 							))}
-							<div className="flex items-center gap-2 py-2 text-warning font-bold">
+							<div 
+								className="flex items-center gap-2 py-2 text-warning font-bold rounded-md cursor-pointer px-1"
+								onClick={() => setAddTagOpen(true)}
+							>
 								<Plus className="w-4" />
 								<p>새 태그 추가</p>
 							</div>
-						<div className="flex justify-end gap-2 w-full">
+						<div className="flex justify-end gap-2 w-full mt-2">
 							<Button
 								variant="secondary"
 								className="w-[50%]"
@@ -93,6 +99,7 @@ export default function AddTagButton({ tags, onAddTags }: { tags: string[], onAd
 					</div>
 				)}
 			</div>
+			<AddTagDialog open={addTagOpen} onOpenChange={setAddTagOpen} />
 		</div>
 	)
 }
