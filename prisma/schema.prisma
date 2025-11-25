@@ -79,7 +79,7 @@ model TodoTask {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   review    String   @default("")
-  emotion   String   @default("")
+  emotions  String[] @default([])
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)

@@ -7,4 +7,3 @@ export type Emotion =
 	| 'anxious'
 	| 'annoyed'
 	| 'achievement'
-	| ''

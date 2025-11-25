@@ -25,13 +25,13 @@ export default function TaskDetailPanel({
 }: TaskDetailPanelProps) {
 	const [title, setTitle] = useState('')
 	const [review, setReview] = useState('')
-	const [selectedEmotion, setSelectedEmotion] = useState<Emotion>('')
+	const [selectedEmotions, setSelectedEmotions] = useState<Emotion[]>([])
 
 	useEffect(() => {
 		if (todo) {
 			setTitle(todo.title)
 			setReview(todo.review || '')
-			setSelectedEmotion(todo.emotion || '')
+			setSelectedEmotions(todo.emotions || [])
 		}
 	}, [todo])
 
@@ -39,17 +39,20 @@ export default function TaskDetailPanel({
 		const task = {
 			title: title.trim() === '' ? undefined : title,
 			review: review.trim() === '' ? undefined : review,
-			emotion: selectedEmotion,
+			emotions: selectedEmotions,
 		}
 
 		if (todo) onUpdate(todo.id, task)
 	}
 
 	const handleEmotionSelect = (emotionValue: Emotion) => {
-		let _emotionValue = emotionValue
-		if (emotionValue === selectedEmotion) _emotionValue = ''
+		let _selectedEmotions = [...selectedEmotions, emotionValue]
+		if (selectedEmotions.includes(emotionValue))
+			_selectedEmotions = selectedEmotions.filter(
+				(emotion) => emotion !== emotionValue,
+			)
 
-		setSelectedEmotion(_emotionValue)
+		setSelectedEmotions(_selectedEmotions)
 	}
 
 	const handleDelete = () => {
@@ -130,7 +133,7 @@ export default function TaskDetailPanel({
 									</label>
 									<EmotionSelector
 										onSelectEmotion={handleEmotionSelect}
-										selectedEmotion={selectedEmotion}
+										selectedEmotions={selectedEmotions}
 									/>
 								</div>
 							</>

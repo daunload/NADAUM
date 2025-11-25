@@ -3,10 +3,10 @@ import { Emotion } from '../types'
 
 export default function EmotionSelector({
 	onSelectEmotion,
-	selectedEmotion,
+	selectedEmotions,
 }: {
 	onSelectEmotion: (emotion: Emotion) => void
-	selectedEmotion: Emotion
+	selectedEmotions: Emotion[]
 }) {
 	return (
 		<div className="flex flex-wrap gap-2 mt-2">
@@ -18,7 +18,7 @@ export default function EmotionSelector({
                         px-2 py-1 rounded-full text-sm font-medium transition-all
                         flex items-center gap-1.5
                         ${
-							selectedEmotion === emotion.value
+							selectedEmotions.includes(emotion.value)
 								? 'bg-primary/20 text-primary border-2 border-primary'
 								: 'bg-bg-page text-text-secondary border-2 border-border-soft hover:border-primary/30 hover:bg-primary/5'
 						}

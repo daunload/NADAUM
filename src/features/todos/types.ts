@@ -5,7 +5,7 @@ export interface Todo {
 	title: string
 	completed: boolean
 	review: string
-	emotion: Emotion
+	emotions: Emotion[]
 	createdAt: Date
 	updatedAt: Date
 }
@@ -20,7 +20,7 @@ export interface UpdateTodoRequest {
 	title?: string
 	completed?: boolean
 	review?: string
-	emotion?: Emotion
+	emotions?: Emotion[]
 }
 
 export interface MonthlyTodoResponse {
