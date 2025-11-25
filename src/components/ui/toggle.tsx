@@ -1,4 +1,4 @@
-export default function TaskToggle({
+export default function Toggle({
     active,
     onClick
 }: { active: boolean, onClick: (event: React.MouseEvent<HTMLButtonElement>) => void}) {

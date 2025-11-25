@@ -1,5 +1,5 @@
+import Toggle from '@/components/ui/toggle'
 import { Todo } from '../types'
-import TaskToggle from './TaskToggle'
 
 export default function TaskItem({
 	todo,
@@ -17,13 +17,13 @@ export default function TaskItem({
 			className="group flex items-center gap-4 bg-bg-surface p-4 rounded-[20px] border border-border-soft shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.04)] hover:border-accent/50 transition-all duration-300 cursor-pointer"
 			onClick={() => onSelect?.(todo.id)}
 		>
-			<TaskToggle
+			<Toggle
 				active={todo.completed}
 				onClick={(e) => {
 					e.stopPropagation()
 					onToggle(todo.id, todo.completed)
 				}}
-			></TaskToggle>
+			></Toggle>
 
 			<span
 				className={`grow text-lg transition-all duration-200 ${

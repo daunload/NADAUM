@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import Toggle from '@/components/ui/toggle'
 import EmotionSelector from '@/features/emotion/components/EmotionSelector'
 import { Emotion } from '@/features/emotion/types'
 import AddTagButton from '@/features/tag/components/AddTagButton'
@@ -9,7 +10,6 @@ import { useEffect, useState } from 'react'
 import TagInput from '../../tag/components/TagInput'
 import { useUserTags } from '../../tag/hooks/use-user-tags'
 import { Todo, UpdateTodoRequest } from '../types'
-import TaskToggle from './TaskToggle'
 
 interface TaskDetailPanelProps {
 	todo: Todo | null
@@ -88,13 +88,13 @@ export default function TaskDetailPanel({
 					{/* Header */}
 					<div className="flex flex-col p-6 border-b border-border-soft">
 						<div className="flex items-center justify-between gap-2 mb-2">
-							<TaskToggle
+							<Toggle
 								active={todo.completed}
 								onClick={(e) => {
 									e.stopPropagation()
 									onToggle(todo.id, todo.completed)
 								}}
-							></TaskToggle>
+							></Toggle>
 							<Input
 								value={title}
 								onChange={(e) => setTitle(e.target.value)}
