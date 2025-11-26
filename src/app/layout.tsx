@@ -1,6 +1,15 @@
 import Header from '@/components/layout/header'
+import type { Metadata } from 'next'
 import './globals.css'
 import { Providers } from './provider'
+
+export const metadata: Metadata = {
+	title: 'NADAUM',
+	description: '나다움과 함께 하루를 시작해보세요',
+	openGraph: {
+		images: '/images/nadaum.jpg',
+	},
+}
 
 export default function RootLayout({
 	children,
