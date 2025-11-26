@@ -2,11 +2,16 @@
 
 import { EMOTIONS } from '@/features/emotion/constants/emotion'
 import { Emotion } from '@/features/emotion/types'
-import { useTodayTasks } from '@/features/todos/hooks'
+import { useMonthlyTodos, useTodayTasks } from '@/features/todos/hooks'
 import { useMemo } from 'react'
 
 export default function DashboardPage() {
 	const { data: todos } = useTodayTasks()
+
+	const now = new Date()
+	const currentYear = now.getFullYear()
+	const currentMonth = now.getMonth() + 1
+	const { data: monthlyData } = useMonthlyTodos(currentYear, currentMonth)
 
 	const stats = useMemo(() => {
 		if (!todos) return null
@@ -49,6 +54,28 @@ export default function DashboardPage() {
 			reviewRate,
 		}
 	}, [todos])
+
+	const tagEmotionStats = useMemo(() => {
+		if (!monthlyData?.todos) return null
+
+		const tagStats: Record<string, Record<string, number>> = {}
+
+		monthlyData.todos.forEach((todo) => {
+			if (todo.completed && todo.emotions && todo.tags) {
+				todo.tags.forEach((tag) => {
+					if (!tagStats[tag]) {
+						tagStats[tag] = {}
+					}
+					todo.emotions.forEach((emotion) => {
+						tagStats[tag][emotion] =
+							(tagStats[tag][emotion] || 0) + 1
+					})
+				})
+			}
+		})
+
+		return tagStats
+	}, [monthlyData])
 
 	if (!stats) {
 		return (
@@ -229,6 +256,94 @@ export default function DashboardPage() {
 										<span className="text-xs text-text-sub bg-bg-surface px-2 py-0.5 rounded-full">
 											{count}
 										</span>
+									</div>
+								)
+							})}
+					</div>
+				</div>
+			)}
+
+			{/* 태그별 감정 통계 */}
+			{tagEmotionStats && Object.keys(tagEmotionStats).length > 0 && (
+				<div className="bg-bg-surface p-6 rounded-[20px] border border-border-soft shadow-sm">
+					<div className="mb-4">
+						<h3 className="text-lg font-semibold text-text-main mb-1">
+							이번 달 태그별 감정 통계
+						</h3>
+						<p className="text-sm text-text-sub">
+							각 태그에서 느낀 감정들을 확인해보세요
+						</p>
+					</div>
+					<div className="space-y-4">
+						{Object.entries(tagEmotionStats)
+							.sort(([, a], [, b]) => {
+								// Sort by total emotion count
+								const totalA = Object.values(a).reduce(
+									(sum, count) => sum + count,
+									0,
+								)
+								const totalB = Object.values(b).reduce(
+									(sum, count) => sum + count,
+									0,
+								)
+								return totalB - totalA
+							})
+							.map(([tag, emotions]) => {
+								const totalCount = Object.values(
+									emotions,
+								).reduce((sum, count) => sum + count, 0)
+
+								return (
+									<div
+										key={tag}
+										className="p-4 bg-bg-page rounded-xl border border-border-soft"
+									>
+										<div className="flex items-center justify-between mb-3">
+											<div className="flex items-center gap-2">
+												<div className="w-2 h-2 rounded-full bg-primary" />
+												<span className="font-medium text-text-main">
+													{tag}
+												</span>
+											</div>
+											<span className="text-xs text-text-sub bg-bg-surface px-2 py-1 rounded-full">
+												총 {totalCount}회
+											</span>
+										</div>
+										<div className="flex flex-wrap gap-2">
+											{Object.entries(emotions)
+												.sort(([, a], [, b]) => b - a)
+												.map(([emotion, count]) => {
+													const emotionData =
+														EMOTIONS.find(
+															(e) =>
+																e.value ===
+																emotion,
+														)
+													if (!emotionData)
+														return null
+
+													return (
+														<div
+															key={emotion}
+															className="flex items-center gap-1.5 px-3 py-1.5 bg-bg-surface rounded-lg border border-border-soft"
+														>
+															<span className="text-lg">
+																{
+																	emotionData.emoji
+																}
+															</span>
+															<span className="text-sm font-medium text-text-main">
+																{
+																	emotionData.label
+																}
+															</span>
+															<span className="text-xs text-text-sub">
+																×{count}
+															</span>
+														</div>
+													)
+												})}
+										</div>
 									</div>
 								)
 							})}
