@@ -52,7 +52,10 @@ export const CardContent = ({
 	children,
 	...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
-	<div className={`text-[15px] text-text-sub leading-relaxed ${className}`} {...props}>
+	<div
+		className={`text-[15px] text-text-sub leading-relaxed ${className}`}
+		{...props}
+	>
 		{children}
 	</div>
 )

@@ -7,7 +7,13 @@ import { useEffect, useState } from 'react'
 import { useUserTags } from '../hooks/use-user-tags'
 import AddTagDialog from './AddTagDialog'
 
-export default function AddTagButton({ tags, onAddTags }: { tags: string[], onAddTags: (tags: string[]) => void}) {
+export default function AddTagButton({
+	tags,
+	onAddTags,
+}: {
+	tags: string[]
+	onAddTags: (tags: string[]) => void
+}) {
 	const [open, setOpen] = useState(false)
 	const { data: userTags } = useUserTags()
 	const [currentTags, setCurrentTags] = useState<string[]>([])
@@ -40,18 +46,17 @@ export default function AddTagButton({ tags, onAddTags }: { tags: string[], onAd
 
 	return (
 		<div className="flex gap-2 flex-wrap">
-			{currentTags && currentTags.map((tag, index) => (
-				<div 
-					className="bg-bg-subtle rounded-full px-3 py-1 text-sm text-text-main cursor-pointer hover:bg-opacity-80 transition-colors flex items-center gap-1" 
-					key={index}
-				>
-					<p>{tag}</p>
-				</div>
-			))}
-			<div
-				className="relative"
-			>
-				<button 
+			{currentTags &&
+				currentTags.map((tag, index) => (
+					<div
+						className="bg-bg-subtle rounded-full px-3 py-1 text-sm text-text-main cursor-pointer hover:bg-opacity-80 transition-colors flex items-center gap-1"
+						key={index}
+					>
+						<p>{tag}</p>
+					</div>
+				))}
+			<div className="relative">
+				<button
 					onClick={() => setOpen(!open)}
 					className="flex items-center gap-1 text-sm text-text-sub hover:text-text-main transition-colors px-2 py-1 rounded-md hover:bg-bg-subtle"
 				>
@@ -88,7 +93,7 @@ export default function AddTagButton({ tags, onAddTags }: { tags: string[], onAd
 							)}
 						</div>
 						<div className="p-2 border-t border-border-soft bg-bg-page/50">
-							<button 
+							<button
 								className="w-full flex items-center justify-center gap-2 py-2 text-primary font-medium hover:bg-bg-surface rounded-lg transition-all shadow-sm border border-transparent hover:border-border-soft"
 								onClick={() => setAddTagOpen(true)}
 							>
@@ -105,10 +110,10 @@ export default function AddTagButton({ tags, onAddTags }: { tags: string[], onAd
 							>
 								취소
 							</Button>
-							<Button 
-								variant="primary" 
-								className="flex-1" 
-								size="sm" 
+							<Button
+								variant="primary"
+								className="flex-1"
+								size="sm"
 								onClick={() => save()}
 							>
 								확인

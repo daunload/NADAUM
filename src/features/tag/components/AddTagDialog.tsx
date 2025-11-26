@@ -2,11 +2,11 @@
 
 import { Button } from '@/components/ui/button'
 import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
+	Dialog,
+	DialogContent,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { useState } from 'react'
@@ -17,7 +17,10 @@ interface AddTagDialogProps {
 	onOpenChange: (open: boolean) => void
 }
 
-export default function AddTagDialog({ open, onOpenChange }: AddTagDialogProps) {
+export default function AddTagDialog({
+	open,
+	onOpenChange,
+}: AddTagDialogProps) {
 	const [tag, setTag] = useState('')
 	const { mutate: addTag, isPending } = useAddTag()
 
@@ -37,7 +40,9 @@ export default function AddTagDialog({ open, onOpenChange }: AddTagDialogProps) 
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent className="sm:max-w-[400px] bg-bg-surface border-border-soft shadow-xl p-0 gap-0 overflow-hidden">
 				<DialogHeader className="p-6 pb-2">
-					<DialogTitle className="text-xl font-bold text-text-main">새 태그 추가</DialogTitle>
+					<DialogTitle className="text-xl font-bold text-text-main">
+						새 태그 추가
+					</DialogTitle>
 				</DialogHeader>
 				<form onSubmit={handleSubmit}>
 					<div className="p-6 pt-2">
@@ -60,9 +65,9 @@ export default function AddTagDialog({ open, onOpenChange }: AddTagDialogProps) 
 							>
 								취소
 							</Button>
-							<Button 
-								type="submit" 
-								variant="primary" 
+							<Button
+								type="submit"
+								variant="primary"
 								disabled={!tag.trim() || isPending}
 								className="flex-1"
 							>

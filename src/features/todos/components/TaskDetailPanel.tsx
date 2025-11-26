@@ -115,7 +115,10 @@ export default function TaskDetailPanel({
 								</svg>
 							</button>
 						</div>
-						<AddTagButton tags={todo.tags} onAddTags={handleAddTags}/>
+						<AddTagButton
+							tags={todo.tags}
+							onAddTags={handleAddTags}
+						/>
 					</div>
 					<div className="flex-1 overflow-y-auto p-6 space-y-6">
 						{todo.completed && (

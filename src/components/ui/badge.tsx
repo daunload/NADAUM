@@ -21,7 +21,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
 	) => {
 		const baseStyles =
 			'inline-flex items-center justify-center px-3 py-1.5 rounded-full text-[14px] font-medium transition-all duration-200'
-		
+
 		const interactiveStyles = interactive
 			? 'cursor-pointer hover:opacity-80 active:scale-95'
 			: ''
