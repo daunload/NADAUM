@@ -6,8 +6,72 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog'
+import { EMOTIONS } from '@/features/emotion/constants/emotion'
+import { Emotion } from '@/features/emotion/types'
 import { Todo } from '@/features/todos/types'
 import { useEffect, useState } from 'react'
+
+interface EmotionListProps {
+	emotions: Emotion[]
+}
+
+function EmotionList({ emotions }: EmotionListProps) {
+	if (!emotions || emotions.length === 0) return null
+
+	return (
+		<div className="flex gap-1 mt-2">
+			{emotions.map((emotion) => (
+				<span
+					key={emotion}
+					title={EMOTIONS.find((e) => e.value === emotion)?.label}
+				>
+					{EMOTIONS.find((e) => e.value === emotion)?.emoji}
+				</span>
+			))}
+		</div>
+	)
+}
+
+interface TaskItemProps {
+	task: Todo
+}
+
+function TaskItem({ task }: TaskItemProps) {
+	return (
+		<div className="p-4 border border-border-soft rounded-lg bg-bg-surface hover:bg-bg-subtle/30 transition-colors">
+			<div className="flex items-start justify-between gap-4">
+				<div className="flex-1">
+					<h3
+						className={`font-medium ${
+							task.completed
+								? 'line-through text-text-sub'
+								: 'text-text-main'
+						}`}
+					>
+						{task.title}
+					</h3>
+					<p className="text-xs text-text-sub mt-1">
+						{new Date(task.createdAt).toLocaleTimeString('ko-KR', {
+							hour: '2-digit',
+							minute: '2-digit',
+						})}
+					</p>
+					{task.review && (
+						<p className="text-sm text-text-sub mt-2 bg-bg-subtle/50 p-2 rounded">
+							{task.review}
+						</p>
+					)}
+					<EmotionList emotions={task.emotions} />
+				</div>
+				{task.completed && (
+					<span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">
+						완료
+					</span>
+				)}
+			</div>
+		</div>
+	)
+}
 
 interface DayDetailDialogProps {
 	open: boolean
@@ -88,37 +152,7 @@ export function DayDetailDialog({
 								총 {tasks.length}개의 할 일
 							</p>
 							{tasks.map((task) => (
-								<div
-									key={task.id}
-									className="p-4 border border-border-soft rounded-lg bg-bg-surface hover:bg-bg-subtle/30 transition-colors"
-								>
-									<div className="flex items-start justify-between gap-4">
-										<div className="flex-1">
-											<h3
-												className={`font-medium ${
-													task.completed
-														? 'line-through text-text-sub'
-														: 'text-text-main'
-												}`}
-											>
-												{task.title}
-											</h3>
-											<p className="text-xs text-text-sub mt-1">
-												{new Date(
-													task.createdAt,
-												).toLocaleTimeString('ko-KR', {
-													hour: '2-digit',
-													minute: '2-digit',
-												})}
-											</p>
-										</div>
-										{task.completed && (
-											<span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">
-												완료
-											</span>
-										)}
-									</div>
-								</div>
+								<TaskItem key={task.id} task={task} />
 							))}
 						</div>
 					)}
